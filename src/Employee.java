@@ -2,23 +2,23 @@ import java.util.Comparator;
 
 public class Employee {
 
-    //
+    //Employee attributes
     private int id;
     private String firstName;
     private String secondName;
     private float payment;
 
-    //Constructs a new Employee instance.
+    //Constructs a new Employee instance without parameters
     public Employee(){}
 
-    //Constructs a new Employee instance.
+    //Constructs a new Employee instance with parameters
     public Employee(int id, String firstName, String secondName, float payment) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.payment = payment;
     }
-
+    //Getters and Setters
     public String getFirstName() {
         return firstName;
     }
@@ -55,6 +55,7 @@ public class Employee {
         return employee.getPayment();
     }
 
+    //Interfaces for sorting a collection
     public static Comparator<Employee> IdComparator = (o1, o2) -> {
         int id1 = o1.getId();
         int id2 = o2.getId();
@@ -78,6 +79,7 @@ public class Employee {
         return diff.intValue();
     };
 
+    //Making a string from object's values of attributes
     public static String toString(Employee employee){
 
         return String.format(
