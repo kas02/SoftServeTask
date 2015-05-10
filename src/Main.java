@@ -8,63 +8,61 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.util.*;
 
-//the main class of Application
+//The main class of Application
 public class Main extends Application {
 
     Button buttonAdd;
     Button buttonDel;
     Button buttonShowCurrent;
-
     ChoiceBox<String> choiceSort;
-
     static Stage mainWindow;
 
-    //current sort type of Employees list
+    //Current sort type of Employees list
     public static String currentSort;
 
-    //collection of Employee objects
+    //Collection of Employee objects
     public static ArrayList<Employee> employeesList = new ArrayList<>();
 
     //ListView of Employees
     ListView<String> listView = new ListView<>();
 
-    //entrance to the program
+    //Entrance to the program
     public static void main(String args[]){
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //main window's description text
+        //Main window's description text
         Label label = new Label("You can add, delete or view employees data");
         label.setPadding(new Insets(10));
 
-        //renamed primaryStage for convenience
+        //Renamed primaryStage for convenience
         mainWindow = primaryStage;
         mainWindow.setTitle("Employees manager");
 
-        //button which open the window for adding new Employee
+        //Button which open the window for adding new Employee
         buttonAdd = new Button("Add");
         buttonAdd.setMinWidth(50);
 
-        //button which delete current selected Employee
+        //Button which delete current selected Employee
         buttonDel = new Button("Delete");
         buttonDel.setMinWidth(50);
 
-        //button which open the window with information about
+        //Button which open the window with information about
         //current selected Employee
         buttonShowCurrent = new Button("Show current");
         buttonShowCurrent.setMinWidth(50);
 
-        //open window for adding a new Employee
+        //Open window for adding a new Employee
         buttonAdd.setOnAction(e -> AddWindow.display());
 
-        //delete current selected Employee from the list
+        //Delete current selected Employee from the list
         buttonDel.setOnAction(e -> deleteEmployee());
 
-        ////open window with information of current selected Employee
+        //Open window with information of current selected Employee
         buttonShowCurrent.setOnAction(e -> {
-            //trying to open a window with Employee information.
+            //Trying to open a window with Employee information.
             //If it fail then change the description text
             if (!showEmployeeData())
                 label.setText("Select an employee");
@@ -76,24 +74,27 @@ public class Main extends Application {
         buttonsBox.setPadding(new Insets(10));
         buttonsBox.getChildren().addAll(buttonAdd, buttonDel, buttonShowCurrent);
 
-
+        //View for selection type to sort
         choiceSort = new ChoiceBox<>();
         choiceSort.getItems().addAll("First name", "Second name", "ID", "Monthly salary");
         currentSort = "First name";
         choiceSort.setValue(currentSort);
+        //Selection a type to sort and refreshing a list by invoking showList method
         choiceSort.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
             currentSort = newValue;
             showList();
         });
 
         try {
+            //Open or create file if it not exists
             Scanner readFile = new Scanner(FileHandler.openFile());
+            //Check whether the file is empty and throw exception if it is
             if (!readFile.hasNext()) {
                 throw new Exception();
             }
 
             readFile.useDelimiter(";");
-
+            //Cycle reading data from text file and creating an ArrayList<Employee> collection
             while (readFile.hasNext()){
 
                 String id = readFile.next();
@@ -169,7 +170,7 @@ public class Main extends Application {
         }
         int i = 1;
         for (Employee anEmployeesList : employeesList) {
-            listView.getItems().add(String.format("%s. %s", i++, Employee.toString(anEmployeesList)));
+            listView.getItems().add(String.format("%s. %s", i++, anEmployeesList.toString()));
         }
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
@@ -182,7 +183,7 @@ public class Main extends Application {
             String firstName = employeesList.get(index).getFirstName();
             String secondName = employeesList.get(index).getSecondName();
             float payment = employeesList.get(index).getPayment();
-            double salary = employeesList.get(index).getSalary(employeesList.get(index));
+            double salary = employeesList.get(index).getSalary();
             EmployeeDataWindow.display(id, firstName, secondName, payment, salary);
             return true;
         } catch (ArrayIndexOutOfBoundsException e){
@@ -202,7 +203,6 @@ public class Main extends Application {
             int index = listView.getSelectionModel().getSelectedIndex();
             int id = employeesList.get(index).getId();
             employeesList.remove(index);
-
             showList();
         } catch (ArrayIndexOutOfBoundsException e){
            showList();
