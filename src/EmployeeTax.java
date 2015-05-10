@@ -7,7 +7,7 @@ public class EmployeeTax extends Employee{
     }
 
     @Override
-    public double getSalary(Employee employee) {
-        return super.getSalary(employee)*20.8*8;
+    public double getSalary() {
+        return super.getSalary()*20.8*8;
     }
 }
