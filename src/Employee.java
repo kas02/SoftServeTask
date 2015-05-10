@@ -51,8 +51,8 @@ public class Employee {
         this.secondName = secondName;
     }
 
-    public double getSalary(Employee employee) {
-        return employee.getPayment();
+    public double getSalary() {
+        return this.getPayment();
     }
 
     //Interfaces for sorting a collection
@@ -75,19 +75,19 @@ public class Employee {
     };
 
     public static Comparator<Employee> PaymentComparator = (o1, o2) -> {
-        Double diff = o1.getSalary(o1) - o2.getSalary(o2);
+        Double diff = o1.getSalary() - o2.getSalary();
         return diff.intValue();
     };
 
     //Making a string from object's values of attributes
-    public static String toString(Employee employee){
+    public String toString(){
 
         return String.format(
                 "%s %s;  ID = %s;  %s UAH",
-                employee.getFirstName(),
-                employee.getSecondName(),
-                employee.getId(),
-                employee.getSalary(employee));
+                this.getFirstName(),
+                this.getSecondName(),
+                this.getId(),
+                this.getSalary());
     }
 }
 
